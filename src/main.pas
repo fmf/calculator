@@ -27,7 +27,6 @@
 {$calling cdecl}
 {$h+}
 
-// crap code is crap
 program calculator;
 
 
@@ -35,7 +34,7 @@ uses
 	gui;
 
 // this must be the shortest main program in the history
-//of main programs. If not is a top contenter
+//of main programs. If not is a top contender
 begin
 	// so... uhm... start... :|
 	start();	

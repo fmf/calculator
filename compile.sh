@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # create the directory
-mkdir release
+mkdir bin
 
 # compile
-fpc src/main.pas -O2 -Xs -Cg -FErelease -ocalculator
+fpc src/main.pas -O2 -Xs -Cg -FEbin -ocalculator
 
 # remove crap
-cd release
+cd bin
 rm *.o *.ppu

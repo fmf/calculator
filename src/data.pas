@@ -46,7 +46,6 @@ interface
 		(*  signals the gui if there were errors during computation
 		 * so it can take proper action
 		 *
-		 * <strike> -1: shit is so broke... </strike>
 		 * 1 : stack is full;
 		 * 2 : stack is empty;
 		 * 3 : division by 0;
@@ -248,9 +247,7 @@ implementation
 						  end;
 					';' : begin
 							dr:= postfix_pop();
-							// note to self: wouldn't be better to use the abs function
-							//to copare all this floats?
-							if (dr < 0.000000000) then
+							if (abs(dr-0.0) < 0.000000001) then 
 								ERROR:= 4
 							else
 								postfix_push(sqrt(dr));
@@ -258,11 +255,11 @@ implementation
 					'%' : begin
 							dr:= postfix_pop();
 							di:= round(dr);
-							if (frac(dr) > 0.000000000) then
+							if (abs(frac(dr)-0.0) > 0.000000001) then
 								ERROR:= 5
 							else begin
 								dr:= postfix_pop();
-								if (frac(dr) > 0.000000000) then
+								if (abs(frac(dr)-0.0) > 0.000000001) then
 									ERROR:= 5
 								else
 									postfix_push(round(dr) mod di);
@@ -272,32 +269,32 @@ implementation
 					'@' : postfix_push(cos(degToRad(postfix_pop())));
 					'$' : begin
 							dr:= postfix_pop();
-							if (dr = 90.000000000) then
+							if (abs(dr-90.0) < 0.000000001) then
 								ERROR:= 6
 							else
 								postfix_push(tan(degToRad(dr)));
 						  end;
 					'&' : begin
 							dr:= postfix_pop();
-							if (dr = 0.000000000) then
+							if (abs(dr-0.0) < 0.000000001) then
 								ERROR:= 7
 							else
 								postfix_push(cotan(degToRad(dr)));
 						  end;
 					'|' : begin
 							dr:= postfix_pop();
-							if (dr = 0.000000000) then
+							if (abs(dr-0.0) < 0.000000001) then
 								ERROR:= 8
-							else if (dr < 0.000000000) then
+							else if (abs(dr) <> dr) then
 								ERROR:= 9
 							else
 								postfix_push(log10(dr));
 						  end;
 					'\' : begin
 							dr:= postfix_pop();
-							if (dr = 0.000000000) then
+							if (abs(dr-0.0) < 0.000000001) then
 								ERROR:= 10
-							else if (dr < 0.000000000) then
+							else if (abs(dr) <> dr) then
 								ERROR:= 11
 							else
 								postfix_push(ln(dr));
@@ -306,10 +303,10 @@ implementation
 					'+' : postfix_push(postfix_pop() + postfix_pop());
 					'/' : begin
 							dr:= postfix_pop();
-							if (dr <> 0) then
-								postfix_push(postfix_pop() / dr)
+							if (abs(dr-0.0) < 0.000000001) then
+								ERROR:= 3
 							else
-								ERROR:= 3;
+								postfix_push(postfix_pop() / dr);
 						  end;
 					'-' : begin
 							dr:= postfix_pop();
@@ -322,7 +319,6 @@ implementation
 					if (err = 0) then
 						postfix_push(dr)
 					else
-						//ERROR:=-1;	// this should never execute, but better prevent than treat
 						ERROR:= 14;
 				end;
 				end;
@@ -559,7 +555,7 @@ implementation
 			ds: string;
 		begin
 			x:= compute(s);
-			if (frac(x) = 0) then
+			if (abs(x-0.0) < 0.000000001) then
 				result:= floatToStrF(x, ffFixed, 0, 0)
 			else begin
 				ds:= floatToStrF(x, ffFixed, 0, DECIMAL_PLACES);

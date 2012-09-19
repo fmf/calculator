@@ -23,8 +23,6 @@
 	Florea Marius Florin, florea.fmf@gmail.com
 }
 
-(* well... fuck: @1st august when started refactoring... finished @4th august*)
-
 (* The unit that handles the program gui,
 * creates the window, takes input, shows output... *)
 
@@ -38,7 +36,7 @@ unit gui;
 interface
 	
 	
-	(* takes care of almost everithing in the program.
+	(* takes care of almost everything in the program.
 	* from preparing it to responding to user events *)
 	procedure start();
 	
@@ -193,14 +191,27 @@ implementation
 			vbox:= gtk_vbox_new(false, 0);
 			gtk_container_add(pGtkContainer(window), vbox);
 			
-			label_:= gtk_label_new('Calculator -- a calculator program (duh!)'#10'version 1.0, August 4, 2012'#10#10'Copyright (C) 2012 Florea Marius Florin'#10#10'This software is provided ''as-is'', without any express or implied'#10'warranty.  In no event will the authors be held liable for any damages'#10' arising from the use of this software.'#10#10'Permission is granted to anyone to use this software for any purpose,'#10'including commercial applications, and to alter it and redistribute it'#10'freely, subject to the following restrictions:'#10#10#9'1. The origin of this software must not be misrepresented; you must not'#10#9#9'claim that you wrote the original software. If you use this software'#10#9#9'in a product, an acknowledgment in the product documentation would be'#10#9#9'appreciated but is not required.'#10#9'2. Altered source versions must be plainly marked as such, and must not be'#10#9#9'misrepresented as being the original software.'#10#9'3. This notice may not be removed or altered from any source distribution.'#10#10'Florea Marius Florin, florea.fmf@gmail.com');
+			label_:= gtk_label_new('Calculator -- a calculator program '#10'version 1.0, '+
+			'August 4, 2012'#10#10'Copyright (C) 2012 Florea Marius Florin'#10#10'This software is '+
+			'provided ''as-is'', without any express or implied'#10'warranty.  In no event will the '+
+			'authors be held liable for any damages'#10' arising from the use of this software.'+
+			''#10#10'Permission is granted to anyone to use this software for any purpose,'#10''+
+			'including commercial applications, and to alter it and redistribute it'#10'freely, '+
+			'subject to the following restrictions:'#10#10#9'1. The origin of this software must '+
+			'not be misrepresented; you must not'#10#9#9'claim that you wrote the original software. '+
+			'If you use this software'#10#9#9'in a product, an acknowledgment in the product '+
+			'documentation would be'#10#9#9'appreciated but is not required.'#10#9'2. Altered '+
+			'source versions must be plainly marked as such, and must not be'#10#9#9'misrepresented '+
+			'as being the original software.'#10#9'3. This notice may not be removed or altered '+
+			'from any source distribution.'#10#10'Florea Marius Florin, florea.fmf@gmail.com');
 			gtk_box_pack_start(pGtkBox(vbox), label_, false, false, 0);
 		
 			hbox:= gtk_hbox_new(false, 0);
 			gtk_box_pack_start(pGtkBox(vbox), hbox, false, false, 0);
 			
 			button:= gtk_button_new_with_label('     Close     ');
-			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window), pgpointer(window));
+			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window),
+								pgpointer(window));
 			gtk_box_pack_end(pGtkBox(hbox), button, false, false, 0);
 			
 			gtk_widget_show_all(window);
@@ -230,7 +241,8 @@ implementation
 			hbox:= gtk_hbox_new(false, 0);
 			gtk_box_pack_start(pGtkBox(vbox), hbox, false, false, 0);
 			
-			label_:= gtk_label_new(#9'Developer: Florea Marius Florin'#10#10#9'Special thanks to:'#10#9#9'-FPC team: for building the compiler'#10#9#9'-Gtk+ team: for making the toolkit');
+			label_:= gtk_label_new(#9'Developer: Florea Marius Florin'#10#10#9'Special thanks to:'+
+			''#10#9#9'-FPC team: for building the compiler'#10#9#9'-Gtk+ team: for making the toolkit');
 			gtk_box_pack_start(pGtkBox(hbox), label_, false, false, 0);
 			
 			pixbuf:= gdk_pixbuf_new_from_xpm_data(XPM_BADGER);
@@ -242,14 +254,15 @@ implementation
 			gtk_box_pack_start(pGtkBox(vbox), hbox, false, false, 0);
 			
 			button:= gtk_button_new_with_label('     Close     ');
-			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window), pgpointer(window));
+			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window),
+								pgpointer(window));
 			gtk_box_pack_end(pGtkBox(hbox), button, false, false, 0);
 			
 			gtk_widget_show_all(window);
 		end;
 	
 	
-	(* returns the number of decimals to which to print the answear *)
+	(* returns the number of decimals to which to print the answer *)
 	procedure get_decimals(widget: pGtkWidget; data: pgpointer);
 		begin
 			DECIMAL_PLACES:= gtk_spin_button_get_value_as_int(pGtkSpinButton(spinBtn));
@@ -257,7 +270,7 @@ implementation
 	
 	
 	(* shows the window in which the user can change the number of
-	* decimals the answear is printed *)
+	* decimals the answer is printed *)
 	procedure change_decimals();
 		var
 			window, label_, button, vbox, hbox: pGtkWidget;
@@ -293,7 +306,8 @@ implementation
 			gtk_box_pack_start(pGtkBox(hbox), button, false, false, 0);
 			
 			button:= gtk_button_new_with_label('     Close     ');
-			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window), pgpointer(window));
+			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window),
+								pgpointer(window));
 			gtk_box_pack_end(pGtkBox(hbox), button, false, false, 0);
 			
 			gtk_widget_show_all(window);
@@ -344,14 +358,21 @@ implementation
 			gtk_box_pack_start(pGtkBox(vbox), img, false, false, 0);
 			
 			label_:= gtk_label_new(pchar(d));
-			gtk_widget_modify_font(label_, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$ifdef unix}
+				gtk_widget_modify_font(label_, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$endif}
+			{$ifdef windows}
+				gtk_widget_modify_font(label_, pango_font_description_from_string('Sans 15'));
+			{$endif}
+
 			gtk_box_pack_start(pGtkBox(vbox), label_, false, false, 0);
 			
 			hbox:= gtk_hbox_new(true, 10);
 			gtk_box_pack_end(pGtkBox(vbox), hbox, false, false, 0);
 			
 			button:= gtk_button_new_with_label('     Okay  :(     ');
-			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window), pgpointer(window));
+			g_signal_connect(g_object(button), 'clicked', g_callback(@destroy_child_window),
+								pgpointer(window));
 			gtk_box_pack_start(pGtkBox(hbox), button, false, false, 0);
 
 			gtk_widget_show_all(window);
@@ -509,7 +530,8 @@ implementation
 					gtk_widget_set_size_request(pGtkWidget(listItems[i,1]), 170, -1);
 				{$endif}
 				gtk_button_set_relief(pGtkButton(listItems[i,1]), gtk_relief_none);
-				g_signal_connect(listItems[i,1], 'clicked', g_callback(@select_list_item), pchar(listValues[i,1]));
+				g_signal_connect(listItems[i,1], 'clicked', g_callback(@select_list_item),
+										pchar(listValues[i,1]));
 				gtk_box_pack_start(pGtkBox(hbox), listItems[i,1], false, false, 2);
 			end;
 		end;
@@ -842,7 +864,12 @@ implementation
 			entryBasic:= gtk_entry_new();
 			gtk_entry_set_max_length(pGtkEntry(entryBasic), LIMIT);
 			gtk_entry_set_alignment(pGtkEntry(entryBasic), 1);
-			gtk_widget_modify_font(entryBasic, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$ifdef unix}
+				gtk_widget_modify_font(entryBasic, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$endif}
+			{$ifdef windows}
+				gtk_widget_modify_font(entryBasic, pango_font_description_from_string('Sans 15'));
+			{$endif}
 			g_signal_connect(entryBasic, 'activate', g_callback(@get_text), entryBasic);
 			gtk_box_pack_start(pGtkBox(vbox), entryBasic, false, false, 5);
 			
@@ -977,7 +1004,12 @@ implementation
 			
 			entryAdv:= gtk_entry_new_with_max_length(LIMIT);
 			gtk_entry_set_alignment(pGtkEntry(entryAdv), 1);
-			gtk_widget_modify_font(entryAdv, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$ifdef unix}
+				gtk_widget_modify_font(entryAdv, pango_font_description_from_string('DejaVu Sans Condensed 15'));
+			{$endif}
+			{$ifdef windows}
+				gtk_widget_modify_font(entryAdv, pango_font_description_from_string('Sans 15'));
+			{$endif}
 			g_signal_connect(entryAdv, 'activate', g_callback(@get_text), entryAdv);
 			
 			gtk_box_pack_start(pGtkBox(vbox), entryAdv, false, false, 5);
@@ -1150,6 +1182,9 @@ implementation
 	procedure start();
 		begin
 			gtk_init(@argc, @argv);
+			{$ifdef windows}
+				gtk_rc_parse('theme');
+			{$endif}
 			
 			set_defaults();
 		
